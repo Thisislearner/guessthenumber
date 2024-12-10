@@ -15,6 +15,17 @@ def system_generated_num(input_lvl : int) -> str:
     return str(random.randint(lvl_range[input_lvl][0], lvl_range[input_lvl][1]))
 
 
+def live_as_per_level(lvl : int) -> int:
+    """gives lives  as per level"""
+    if lvl == 1:
+        return 4
+    elif lvl == 2 or lvl == 3:
+        return 5
+    elif lvl == 4:
+        return 6
+    return 7
+
+
 def taking_plr_name() -> str:
     """function to take name from player"""
     plr_name : str = ""  # var to hold player name.
@@ -74,7 +85,7 @@ def taking_player_input(system_gen_len : int):
     total_chance : int = 3
     while total_chance > 0:
         print(f"+-- {total_chance} of 3 chances left")
-        valid_input = input(f"+-- Enter a {system_gen_len} number :>> ")
+        valid_input = input(f"+-- Enter a {system_gen_len} digits number :>> ")
         # checking for input validity
         if valid_input.isdigit() and len(valid_input) == system_gen_len:
             break
@@ -109,13 +120,19 @@ while game_onn:
     print("+===========================================================+")
     print(f"+-- Hello {player_name.upper()}, you selected {current_lvl} --------")
     print(f"+-- LEVEL : {current_lvl} has generated a {system_num_len} digits number --------")
-    print(display_list_for_player)
     newline_printer(2)
 
-    lives_in_game : int = 4  # total lives in the game.
-    while lives_in_game >= 0:
-        player_input : str = taking_player_input(system_num_len)
+    lives_in_game : int = live_as_per_level(current_lvl)  # total lives in the game.
+    lives_display : int = lives_in_game
 
+    # total lives in the game.
+    while lives_in_game >= 0:
+        print("+-----------------------------------------------------------------+")
+        print(display_list_for_player) # list for player.
+        print(f"+-- {player_name.upper()} you have {lives_in_game}/{lives_display} lives.")
+        player_input : str = taking_player_input(system_num_len)  # taking player input.
+        print("+-----------------------------------------------------------------+")
+        newline_printer(2)
         lives_in_game -= 1
     # asking if player want to play again.
     if input("+-- Enter 'x' to close game :>> ") == 'x':
