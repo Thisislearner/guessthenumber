@@ -1,5 +1,19 @@
 import random
 
+lvl_list : list = [1, 2, 3, 4, 5] # all the levels for the game.
+
+
+def system_generated_num(input_lvl : int) -> str:
+    """generates random number as per level"""
+    lvl_range : dict = {
+        lvl_list[0] : [100000, 1000000],
+        lvl_list[1] : [1000000, 10000000],
+        lvl_list[2] : [10000000, 100000000],
+        lvl_list[3] : [100000000, 1000000000],
+        lvl_list[4] : [1000000000, 10000000000]
+    }
+    return str(random.randint(lvl_range[input_lvl][0], lvl_range[input_lvl][1]))
+
 
 def taking_plr_name() -> str:
     """function to take name from player"""
@@ -42,8 +56,12 @@ game_onn : bool = True
 # while loop to run the game.
 while game_onn:
     player_name : str = taking_plr_name()  # taking player name.
-    taking_lvl(player_name)
+    current_lvl = taking_lvl(player_name)  # level selected by player.
+
+    # system generated numeric string.
+    system_num : str = system_generated_num(current_lvl)
+
 
     # asking if player want to play again.
-    if input("Enter 'a' to play agin :>> ") != 'a':
+    if input("Enter 'x' to close game :>> ") == 'x':
         game_onn = False
