@@ -37,28 +37,12 @@ def taking_plr_name() -> str:
 def taking_lvl(display_name : str) -> int:
     """taking level from player"""
     lvl = 0 # to hold lvl of the game.
-    # taking lvl input.
-    print("\n")
     print("+======================================================+")
     print("+-- Level are 1, 2, 3, 4, 5 ---------------------------+")
     while lvl < 1 or lvl > 5:
         lvl = int(input(f"+-- {display_name.upper()}, please Enter your lvl :>> "))
     print("+======================================================+\n")
     return lvl
-
-
-def take_a_toss(plr_name : str) -> bool:
-    """it's a toss to decide who goes first"""
-    faces_list : list = ['0', '1']
-    player_choice : str = input("+-- Press 0:HEADS OR 1:TAILS :>> ")
-    # checking for player choice.
-    if player_choice == faces_list[0]:
-        print(f"+-- {plr_name.upper()}, chose HEADS")
-    elif player_choice == faces_list[1]:
-        print(f"+-- {plr_name.upper()}, chose TAILS")
-    else:
-        print("+-- INVALID CHOICE --+")
-    return player_choice == random.choice(faces_list)
 
 
 def newline_printer(ttl_newline : int) -> None:
@@ -71,10 +55,16 @@ def digit_place_display(system_gen : str, plr_input : str, display_list : list) 
     """function to created list display for player."""
     plr_display_lst : list = []  # hold match
     # loop to create display.
-    for c, a in system_gen, plr_input:
-        if c == a:
-            pass
-        pass
+    sg : list = list(system_gen)
+    pi : list = list(plr_input)
+    # player input len
+    p_len : int = len(pi)
+    for i in range(p_len):
+        # checking for match
+        if sg[i] == pi[i] or pi[i] == display_list[i]:
+            plr_display_lst.append(pi[i])
+        else:
+            plr_display_lst.append("_")
     return plr_display_lst
 
 
@@ -107,19 +97,22 @@ while game_onn:
     system_num_len : int = len(system_num)  # length of system generated number.
     newline_printer(3)  # printing newlines.
 
+    # player's input.
+    player_input : str = ""
+
     # display list for the player.
     display_list_for_player : list = [] # hold digit/dash for player.
     for _ in range(len(system_num)):
         display_list_for_player.append("_")
+        player_input += "_"
 
     print("+===========================================================+")
     print("+-------------- WELCOME TO MATCH THE NUMBER ----------------+")
     print("+===========================================================+")
-    newline_printer(2)  # newlines for the game.
-
     print("+===========================================================+")
     print(f"+-- Hello {player_name.upper()}, you selected {current_lvl} --------")
     print(f"+-- LEVEL : {current_lvl} has generated a {system_num_len} digits number --------")
+    print(f"this is a {'EVEN' if int(system_num) % 2 == 0 else 'ODD'}")
     newline_printer(2)
 
     lives_in_game : int = live_as_per_level(current_lvl)  # total lives in the game.
@@ -128,12 +121,32 @@ while game_onn:
     # total lives in the game.
     while lives_in_game >= 0:
         print("+-----------------------------------------------------------------+")
-        print(display_list_for_player) # list for player.
+        display : list = digit_place_display(system_num, player_input, display_list_for_player)
+        print(display)  # display for player.
+
         print(f"+-- {player_name.upper()} you have {lives_in_game}/{lives_display} lives.")
-        player_input : str = taking_player_input(system_num_len)  # taking player input.
+        print(system_num)
+        player_input : str = taking_player_input(system_num_len)
         print("+-----------------------------------------------------------------+")
         newline_printer(2)
         lives_in_game -= 1
+
     # asking if player want to play again.
     if input("+-- Enter 'x' to close game :>> ") == 'x':
         game_onn = False
+
+
+#############################################################
+###### COMMENTED TOSS FUNCTION
+# def take_a_toss(plr_name : str) -> bool:
+#     """it's a toss to decide who goes first"""
+#     faces_list : list = ['0', '1']
+#     player_choice : str = input("+-- Press 0:HEADS OR 1:TAILS :>> ")
+#     # checking for player choice.
+#     if player_choice == faces_list[0]:
+#         print(f"+-- {plr_name.upper()}, chose HEADS")
+#     elif player_choice == faces_list[1]:
+#         print(f"+-- {plr_name.upper()}, chose TAILS")
+#     else:
+#         print("+-- INVALID CHOICE --+")
+#     return player_choice == random.choice(faces_list)
