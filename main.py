@@ -15,17 +15,6 @@ def system_generated_num(input_lvl : int) -> str:
     return str(random.randint(lvl_range[input_lvl][0], lvl_range[input_lvl][1]))
 
 
-def live_as_per_level(lvl : int) -> int:
-    """gives lives  as per level"""
-    if lvl == 1:
-        return 4
-    elif lvl == 2 or lvl == 3:
-        return 5
-    elif lvl == 4:
-        return 6
-    return 7
-
-
 def taking_plr_name() -> str:
     """function to take name from player"""
     plr_name : str = ""  # var to hold player name.
@@ -59,10 +48,10 @@ def digit_place_display(system_gen : str, plr_input : str, display_list : list) 
     pi : list = list(plr_input)
     # player input len
     p_len : int = len(pi)
-    for i in range(p_len):
+    for v in range(p_len):
         # checking for match
-        if sg[i] == pi[i] or pi[i] == display_list[i]:
-            plr_display_lst.append(pi[i])
+        if sg[v] == pi[v] or pi[v] == display_list[v]:
+            plr_display_lst.append(pi[v])
         else:
             plr_display_lst.append("_")
     return plr_display_lst
@@ -115,21 +104,26 @@ while game_onn:
     print(f"this is a {'EVEN' if int(system_num) % 2 == 0 else 'ODD'}")
     newline_printer(2)
 
-    lives_in_game : int = live_as_per_level(current_lvl)  # total lives in the game.
-    lives_display : int = lives_in_game
+    lives_in_game : int = 20  # total lives in the game.
 
     # total lives in the game.
-    while lives_in_game >= 0:
-        print("+-----------------------------------------------------------------+")
+    while lives_in_game <= 0:
         display : list = digit_place_display(system_num, player_input, display_list_for_player)
         print(display)  # display for player.
-
-        print(f"+-- {player_name.upper()} you have {lives_in_game}/{lives_display} lives.")
-        print(system_num)
+        print(f"+-- {player_name.upper()} you have {lives_in_game}/20 lives.")
         player_input : str = taking_player_input(system_num_len)
         print("+-----------------------------------------------------------------+")
         newline_printer(2)
-        lives_in_game -= 1
+        lives_in_game += 1
+
+        print("+-----------------------------------------------------------------+")
+        # loop to check name match
+        player_input_len : int = len(player_input)  # player input len
+        player_input_list : list = list(player_input)
+        # loop to check valid match at wrong player.
+        for i in range(player_input_len):
+            c_chr : str = player_input_list[i]
+
 
     # asking if player want to play again.
     if input("+-- Enter 'x' to close game :>> ") == 'x':
