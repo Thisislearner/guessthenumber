@@ -101,29 +101,38 @@ while game_onn:
     print("+===========================================================+")
     print(f"+-- Hello {player_name.upper()}, you selected {current_lvl} --------")
     print(f"+-- LEVEL : {current_lvl} has generated a {system_num_len} digits number --------")
-    print(f"this is a {'EVEN' if int(system_num) % 2 == 0 else 'ODD'}")
+    print(f"+-- {'EVEN' if int(system_num) % 2 == 0 else 'ODD'} number starting with {'EVEN' if int(system_num[0]) % 2 == 0 else 'ODD'} digit.")
     newline_printer(2)
 
     lives_in_game : int = 20  # total lives in the game.
+    previous_entries : list = [] # list of all previous entries made by player.
 
     # total lives in the game.
-    while lives_in_game <= 0:
+    while lives_in_game >= 1:
+        # this is printed later.
         display : list = digit_place_display(system_num, player_input, display_list_for_player)
         print(display)  # display for player.
+        print("+-- Previous Entries:-")
+        print("+-- ", previous_entries)
         print(f"+-- {player_name.upper()} you have {lives_in_game}/20 lives.")
         player_input : str = taking_player_input(system_num_len)
+        previous_entries.append(player_input) # adding previous entries
         print("+-----------------------------------------------------------------+")
         newline_printer(2)
-        lives_in_game += 1
+        lives_in_game -= 1
 
+        # this is printed first
         print("+-----------------------------------------------------------------+")
         # loop to check name match
         player_input_len : int = len(player_input)  # player input len
         player_input_list : list = list(player_input)
         # loop to check valid match at wrong player.
-        for i in range(player_input_len):
-            c_chr : str = player_input_list[i]
-
+        #for i in range(player_input_len):
+            #c_chr : str = player_input_list[i]
+        if player_input == system_num:
+            print(f"YOU have used {20 - lives_in_game} lives")
+            newline_printer(4)
+            break
 
     # asking if player want to play again.
     if input("+-- Enter 'x' to close game :>> ") == 'x':
